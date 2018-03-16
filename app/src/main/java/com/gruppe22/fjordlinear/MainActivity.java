@@ -18,12 +18,18 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity /*implements OnCompleteListener<Void>*/ {
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
+
+    private ArrayList<Geofence> mGeofenceList;
 
     private static final String TAG = "MainActivity";
 
@@ -42,7 +48,10 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
 
         setContentView(R.layout.activity_main);
 
+        mGeofenceList = new ArrayList<>();
+
         createGeoFence();
+
 
         mGeofencePendingIntent = null;
 
@@ -79,6 +88,7 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
     }
 
 
+    /*
     // lager geofence
     public void createGeoFence()
     {
@@ -90,16 +100,46 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
                 .build();
         Log.i(TAG, "createGeoFence");
     }
+    */
+
+    private void createGeoFence() {
+        for (Map.Entry<String, LatLng> entry : Values.HOLDEPLASSER.entrySet()) {
+
+            mGeofenceList.add(new Geofence.Builder()
+                    // Set the request ID of the geofence. This is a string to identify this geofence?????????????
+                    .setRequestId(entry.getKey())
+
+                    // Set the circular region of this geofence.
+                    .setCircularRegion(
+                            entry.getValue().latitude,
+                            entry.getValue().longitude,
+                            Values.GEOFENCE_RADIUS_IN_METERS
+                    )
+
+                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
+
+
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                            Geofence.GEOFENCE_TRANSITION_EXIT)
+
+                    // Create the geofence.
+                    .build());
+        }
+    }
+
 
     private GeofencingRequest getGeofencingRequest()
     {
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
         builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-        builder.addGeofence(geo);
+        builder.addGeofences(mGeofenceList);
 
         Log.i(TAG, "getGeofencingRequest");
         return builder.build();
     }
+
+
+
 
     private PendingIntent getGeofencePendingIntent()
     {
