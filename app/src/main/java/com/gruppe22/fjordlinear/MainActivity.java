@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.Geofence;
@@ -27,6 +29,9 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity /*implements OnCompleteListener<Void>*/ {
 
+    //final TextView textViewToChange = (TextView) findViewById(R.id.textView2);
+
+
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
 
     private ArrayList<Geofence> mGeofenceList;
@@ -35,7 +40,6 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
 
     private GeofencingClient mGeofencingClient;
 
-    private Geofence geo;
 
     private PendingIntent mGeofencePendingIntent;
 
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
 
         mGeofenceList = new ArrayList<>();
 
@@ -87,20 +92,19 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        endreText();
+    }
+
 
     /*
-    // lager geofence
-    public void createGeoFence()
-    {
-        geo = new Geofence.Builder()
-                .setRequestId("hib")
-                .setCircularRegion(Values.lengdegrad, Values.breddegrad, Values.radius)
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
-                .build();
-        Log.i(TAG, "createGeoFence");
-    }
-    */
+    @Override
+    protected void onStop() {
+        super.onStop();
+        endreText();
+    } */
 
     private void createGeoFence() {
         for (Map.Entry<String, LatLng> entry : Values.HOLDEPLASSER.entrySet()) {
@@ -217,4 +221,30 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
         toast.show();
 
     }
+
+
+
+    // endrer informajsonen i fragmentet til den nye plaseringen (håper jeg :))
+    public void endreText() {
+        TextView tv1 = (TextView)findViewById(R.id.textView2);
+        tv1.setText(hentInformasjon());
+    }
+
+    public void setInformajson()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("informasjon", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("plasering", " ");
+        editor.apply();
+    }
+
+    public String hentInformasjon()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("informasjon", Context.MODE_PRIVATE);
+        String name = sharedPreferences.getString("plasering", "");
+
+        return name;
+    }
+
 }

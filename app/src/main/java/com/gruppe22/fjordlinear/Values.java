@@ -40,7 +40,7 @@ public class Values {
         HOLDEPLASSER.put("NONNESETER", new LatLng(60.39013, 5.332753));
 
         // Florida bybanestopp
-        HOLDEPLASSER.put("FLORIDA", new LatLng(60.390148,5.332679));
+        HOLDEPLASSER.put("FLORIDA", new LatLng(60.381609,5.333092));
 
         // Kronstad bybanestopp
         HOLDEPLASSER.put("KRONSTAD", new LatLng(60.370616,5.348073));
