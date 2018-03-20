@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
                 addGeofences();
                 removeGeofenceButton.setEnabled(true);
                 addGeofenceButton.setEnabled(false);
+                Intent i = new Intent(getApplicationContext(), CameraActivity.class);
+                startActivity(i);
             }
         });
 

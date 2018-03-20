@@ -18,7 +18,7 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
 
     Handler mHandler;
 
-    public GeofenceTransitionsJobIntentService(){
+    public GeofenceTransitionsJobIntentService() {
         mHandler = new Handler();
     }
 
@@ -31,11 +31,9 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
     }
 
     @Override
-    protected void onHandleWork(Intent intent)
-    {
+    protected void onHandleWork(Intent intent) {
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
-        if(geofencingEvent.hasError())
-        {
+        if (geofencingEvent.hasError()) {
             Log.e(TAG, "Feil i onHandleWork: geofencingEvent.hasError() ");
             return;
         }
@@ -45,13 +43,12 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
 
         // tester om transitiontypen er av interesse
         if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
-                geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT)
-        {
+                geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
 
             // finner avløst geofence. Går det ann å hente en uten List??
             //List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
 
-            if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
+            if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
                 mutePhone(this);
                 mHandler.post(new DisplayToast(this, "Mute"));
                 Log.e(TAG, "onHandleWork: enter" + geofenceTransition);
@@ -72,7 +69,7 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
         audio.setRingerMode(AudioManager.RINGER_MODE_SILENT);
     }
 
-    private void unmutePhone(Context context){
+    private void unmutePhone(Context context) {
 
         AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
@@ -82,4 +79,3 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
 
 
 }
-
