@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
         addGeofenceButton = findViewById(R.id.activateButton);
         removeGeofenceButton = findViewById(R.id.deactivateButton);
         removeGeofenceButton.setEnabled(false);
+
         // activate the geofence
         addGeofenceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,19 +87,54 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
             public void onClick(View view) {
                 removeGeofence();
 
-                skruPåLyd();
+                setInformajson("");
+                endreText();
                 //skrur av removeButtonm
                 removeGeofenceButton.setEnabled(false);
                 addGeofenceButton.setEnabled(true);
             }
         });
+
+        // oppdaterer teksten i informajsonstavlen gjevnlig
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(1000);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                endreText();
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                }
+            }
+        };
+
+        t.start();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeGeofence();
+        setInformajson("");
+        endreText();
+
+    }
+
+
+    /*
     @Override
     protected void onStart() {
         super.onStart();
         endreText();
     }
+    */
+
 
 
     /*
@@ -228,16 +264,44 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
 
     // endrer informajsonen i fragmentet til den nye plaseringen (håper jeg :))
     public void endreText() {
+
+        String text = "";
+
         TextView tv1 = (TextView)findViewById(R.id.textView2);
-        tv1.setText(hentInformasjon());
+
+
+        switch (hentInformasjon()){
+
+            case "NONNESETER":
+                text = "Nonneseter kloster var et kloster i Bergen i middelalderen. " +
+                        "Det finnes fremdeles to rester av klosteret mellom Lille og Store Lungegårdsvann. " +
+                        "Tårnfoten og søndre korkapell ligger gjemt mellom flere nyere bygg langs Kaigaten.";
+                break;
+
+            case "FLORIDA":
+                text = "Florida er én av syv grunnkretser i strøket Nygård i Bergen sentrum. " +
+                        "Her ligger St. Paul gymnas, tidligere Florida sykehus, og bybanestoppet Florida.\n" +
+                        "Navnet Florida knyttes til eiendommen som huser Geofysisk Institutt ved Universitetet i Bergen. " +
+                        "Her finnes den offisielle værstasjonen (målepunkt) for Bergen.\n";
+                break;
+
+            case "KRONSTAD":
+                text = "Kronstad er et boligområde i Årstad bydel i Bergen like sør for byens sentrum, " +
+                        "som strekker seg fra Store Lungegårdsvann i nord og over Kronstadhøyden til Nymark ved Brann Stadion i sør, " +
+                        "og fra Haukeland universitetssykehus og Møllendal gravplass i øst til Danmarks plass (tidligere Kronstadtorget) " +
+                        "og Solheimsvannet i vest.";
+                break;
+        }
+
+        tv1.setText(text);
     }
 
-    public void setInformajson()
+    public void setInformajson(String text)
     {
         SharedPreferences sharedPreferences = getSharedPreferences("informasjon", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("plasering", " ");
+        editor.putString("plasering", text);
         editor.apply();
     }
 
