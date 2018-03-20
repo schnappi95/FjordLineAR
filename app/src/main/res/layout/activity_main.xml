@@ -25,20 +25,37 @@
         android:text="Deactivate"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/activateButton"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.826" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="210dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="108dp"
+        android:layout_marginBottom="178dp"
         android:layout_marginEnd="84dp"
-        android:layout_marginRight="84dp"
         android:layout_marginTop="76dp"
         android:text="Fjord Line App"
         android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/fragment3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+    <fragment
+        android:name="com.gruppe22.fjordlinear.Informasjonstavle"
+        android:id="@+id/fragment3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="42dp"
+        android:layout_marginStart="42dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+
 </android.support.constraint.ConstraintLayout>
 
 
