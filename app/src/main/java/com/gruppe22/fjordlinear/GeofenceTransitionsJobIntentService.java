@@ -2,13 +2,17 @@ package com.gruppe22.fjordlinear;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.support.v4.app.JobIntentService;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
+
+import java.util.List;
 
 /**
  * Created by Schnappi on 16.03.2018.
@@ -16,9 +20,13 @@ import com.google.android.gms.location.GeofencingEvent;
 
 public class GeofenceTransitionsJobIntentService extends JobIntentService {
 
+
     Handler mHandler;
 
-    public GeofenceTransitionsJobIntentService() {
+
+    String sted = "Hø?";
+
+    public GeofenceTransitionsJobIntentService(){
         mHandler = new Handler();
     }
 
@@ -31,9 +39,11 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
     }
 
     @Override
-    protected void onHandleWork(Intent intent) {
+    protected void onHandleWork(Intent intent)
+    {
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
-        if (geofencingEvent.hasError()) {
+        if(geofencingEvent.hasError())
+        {
             Log.e(TAG, "Feil i onHandleWork: geofencingEvent.hasError() ");
             return;
         }
@@ -43,39 +53,66 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
 
         // tester om transitiontypen er av interesse
         if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
-                geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
+                geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT)
+        {
 
             // finner avløst geofence. Går det ann å hente en uten List??
-            //List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
+            List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
 
-            if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
-                mutePhone(this);
-                mHandler.post(new DisplayToast(this, "Mute"));
-                Log.e(TAG, "onHandleWork: enter" + geofenceTransition);
-            } else {
-                unmutePhone(this);
-                mHandler.post(new DisplayToast(this, "Unmute"));
-                Log.e(TAG, "onHandleWork: exit" + geofenceTransition);
+
+            for (int i = 0; i < triggeringGeofences.size(); i++) {
+                sted = triggeringGeofences.get(i).getRequestId();
+                Log.e(TAG, "FEIL FOR FAEN " + triggeringGeofences.size());
             }
+
+            /*
+            if(sted.equals("NONNESETER"))
+            {
+                Log.e(TAG, "Endret det text?? " + sted);
+                setInformajson(sted);
+
+            } else if(sted.equals("FLORIDA"))
+            {
+                Log.e(TAG, "Endret det text?? " + sted);
+
+                kano.endreText("Hva faen?");
+
+            } else if(sted.equals("KRONSTAD"))
+            {
+                Log.e(TAG, "Endret det text?? " + sted);
+                kano.endreText("kroooonstad");
+
+            } */
+
+
+            if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
+                mHandler.post(new DisplayToast(this, "Hei " + sted));
+                setInformajson(sted);
+                Log.e(TAG, "onHandleWork: enter" + sted + geofenceTransition);
+            } else {
+                mHandler.post(new DisplayToast(this, "Hade " + sted));
+                setInformajson("");
+                Log.e(TAG, "onHandleWork: exit" + sted + geofenceTransition);
+            }
+
 
         } else
             Log.e(TAG, "Geofence Transition Type er feil" + geofenceTransition);
     }
 
-    private void mutePhone(Context context) {
 
-        AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
-        audio.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-    }
 
-    private void unmutePhone(Context context) {
+    // metode for å endre plaseringen i SharedPreferances
+    public void setInformajson(String text)
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("informasjon", Context.MODE_PRIVATE);
 
-        AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-
-        audio.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("plasering", text);
+        editor.apply();
     }
 
 
 }
+
