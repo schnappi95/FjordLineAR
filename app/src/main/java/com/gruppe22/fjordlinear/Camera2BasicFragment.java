@@ -31,6 +31,8 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -271,6 +273,17 @@ public class Camera2BasicFragment extends Fragment
             cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
             //This line is already in the code
             mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));
+
+            //Code for updating the gallery after a image is taken
+            MediaScannerConnection.scanFile(getActivity().getApplicationContext(),
+                    new String[] { mFile.toString() }, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        public void onScanCompleted(String path, Uri uri) {
+                            Log.i("ExternalStorage", "Scanned " + path + ":");
+                            Log.i("ExternalStorage", "-> uri=" + uri);
+                        }
+                    });
+
         }
 
     };
