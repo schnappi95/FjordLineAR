@@ -22,12 +22,13 @@
         android:background="#4285f4"
         android:orientation="horizontal">
 
-        <Button
+        <ImageButton
             android:id="@+id/picture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/picture" />
+            android:contentDescription="@string/camera_button_desc"
+            android:src="@android:drawable/ic_menu_camera" />
 
 
     </FrameLayout>
