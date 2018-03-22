@@ -1,18 +1,23 @@
 package com.gruppe22.fjordlinear;
 
+import android.Manifest;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +37,10 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
     //final TextView textViewToChange = (TextView) findViewById(R.id.textView2);
 
 
-    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
+    private static final int REQUEST_PERMISSIONS_REQUEST_CODE_LOCATION = 99;
+    private static final int REQUEST_PERMISSIONS_REQUEST_CODE_CAMERA = 100;
+    private static final int REQUEST_PERMISSIONS_REQUEST_CODE_WRITE = 101;
+
 
     private ArrayList<Geofence> mGeofenceList;
 
@@ -45,6 +53,7 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
 
     private Button addGeofenceButton;
     private Button removeGeofenceButton;
+    private ImageButton cameraButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,17 +76,28 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
 
         addGeofenceButton = findViewById(R.id.activateButton);
         removeGeofenceButton = findViewById(R.id.deactivateButton);
+        cameraButton = findViewById(R.id.cameraButton);
         removeGeofenceButton.setEnabled(false);
 
         // activate the geofence
         addGeofenceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addGeofences();
-                removeGeofenceButton.setEnabled(true);
-                addGeofenceButton.setEnabled(false);
-                Intent i = new Intent(getApplicationContext(), CameraActivity.class);
-                startActivity(i);
+
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_DENIED){
+                    ActivityCompat.requestPermissions(
+                            MainActivity.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
+                            REQUEST_PERMISSIONS_REQUEST_CODE_LOCATION);
+                }
+
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    addGeofences();
+                    removeGeofenceButton.setEnabled(true);
+                    addGeofenceButton.setEnabled(false);
+                }
+
             }
         });
 
@@ -92,6 +112,35 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
                 //skrur av removeButtonm
                 removeGeofenceButton.setEnabled(false);
                 addGeofenceButton.setEnabled(true);
+            }
+        });
+
+        cameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
+                        == PackageManager.PERMISSION_DENIED) {
+                    ActivityCompat.requestPermissions(
+                            MainActivity.this, new String[]{Manifest.permission.CAMERA},
+                            REQUEST_PERMISSIONS_REQUEST_CODE_CAMERA);
+                }
+
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_DENIED) {
+                    ActivityCompat.requestPermissions(
+                            MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            REQUEST_PERMISSIONS_REQUEST_CODE_WRITE);
+                }
+
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
+                        == PackageManager.PERMISSION_GRANTED &&
+                        ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                == PackageManager.PERMISSION_GRANTED) {
+
+                        Intent i = new Intent(getApplicationContext(), CameraActivity.class);
+                        startActivity(i);
+                }
             }
         });
 
@@ -110,6 +159,7 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
                         });
                     }
                 } catch (InterruptedException e) {
+                    Log.e(TAG, "InterruptedException i informasjonstavle thread");
                 }
             }
         };
