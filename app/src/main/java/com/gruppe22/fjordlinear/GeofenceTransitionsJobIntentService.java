@@ -20,9 +20,7 @@ import java.util.List;
 
 public class GeofenceTransitionsJobIntentService extends JobIntentService {
 
-
     Handler mHandler;
-
 
     String sted = "Hø?";
 
@@ -56,7 +54,7 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
                 geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT)
         {
 
-            // finner avløst geofence. Går det ann å hente en uten List??
+            // finner avløst geofence i en liste.
             List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
 
 
@@ -101,8 +99,6 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
     }
 
 
-
-
     // metode for å endre plaseringen i SharedPreferances
     public void setInformajson(String text)
     {
@@ -112,7 +108,6 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
         editor.putString("plasering", text);
         editor.apply();
     }
-
 
 }
 
