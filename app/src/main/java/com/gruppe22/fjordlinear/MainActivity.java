@@ -36,11 +36,9 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
 
     //final TextView textViewToChange = (TextView) findViewById(R.id.textView2);
 
-
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE_LOCATION = 99;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE_CAMERA = 100;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE_WRITE = 101;
-
 
     private ArrayList<Geofence> mGeofenceList;
 
@@ -48,12 +46,10 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
 
     private GeofencingClient mGeofencingClient;
 
-
     private PendingIntent mGeofencePendingIntent;
 
     private Button addGeofenceButton;
     private Button removeGeofenceButton;
-    private ImageButton cameraButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,22 +57,18 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
 
         setContentView(R.layout.activity_main);
 
-
         mGeofenceList = new ArrayList<>();
 
         createGeoFence();
-
 
         mGeofencePendingIntent = null;
 
         mGeofencingClient = LocationServices.getGeofencingClient(this);
 
-        fuckingsLydlosPermission();
-
-
         addGeofenceButton = findViewById(R.id.activateButton);
         removeGeofenceButton = findViewById(R.id.deactivateButton);
-        cameraButton = findViewById(R.id.cameraButton);
+        ImageButton cameraButton = findViewById(R.id.cameraButton);
+
         removeGeofenceButton.setEnabled(false);
 
         // activate the geofence
@@ -109,7 +101,7 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
 
                 setInformajson("");
                 endreText();
-                //skrur av removeButtonm
+                //skrur av removeButton
                 removeGeofenceButton.setEnabled(false);
                 addGeofenceButton.setEnabled(true);
             }
@@ -186,7 +178,6 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
     */
 
 
-
     /*
     @Override
     protected void onStop() {
@@ -198,7 +189,7 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
         for (Map.Entry<String, LatLng> entry : Values.HOLDEPLASSER.entrySet()) {
 
             mGeofenceList.add(new Geofence.Builder()
-                    // Set the request ID of the geofence. This is a string to identify this geofence?????????????
+                    // Set the request ID of the geofence. This is a string to identify this geofence
                     .setRequestId(entry.getKey())
 
                     // Set the circular region of this geofence.
@@ -231,8 +222,6 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
     }
 
 
-
-
     private PendingIntent getGeofencePendingIntent()
     {
         if(mGeofencePendingIntent != null)
@@ -245,7 +234,6 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
         Log.i(TAG, "getGeofencePendingIntent");
         return mGeofencePendingIntent;
     }
-
 
 
     @SuppressWarnings("MissingPermission")
@@ -284,32 +272,6 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
                     }
                 });
     }
-
-    private void fuckingsLydlosPermission(){
-        NotificationManager notificationManager =
-                (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && !notificationManager.isNotificationPolicyAccessGranted()) {
-
-            Intent intent = new Intent(
-                    android.provider.Settings
-                            .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-
-            startActivity(intent);
-        }
-    }
-
-    private void skruPåLyd(){
-
-        AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-
-        audio.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-        Toast toast = Toast.makeText(this, "Unmute", Toast.LENGTH_SHORT);
-        toast.show();
-
-    }
-
 
 
     // endrer informajsonen i fragmentet til den nye plaseringen (håper jeg :))
@@ -358,9 +320,9 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
     public String hentInformasjon()
     {
         SharedPreferences sharedPreferences = getSharedPreferences("informasjon", Context.MODE_PRIVATE);
-        String name = sharedPreferences.getString("plasering", "");
 
-        return name;
+        return sharedPreferences.getString("plasering", "");
+
     }
 
 }
