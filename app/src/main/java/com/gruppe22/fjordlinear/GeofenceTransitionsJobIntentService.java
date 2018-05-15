@@ -60,37 +60,19 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
 
             for (int i = 0; i < triggeringGeofences.size(); i++) {
                 sted = triggeringGeofences.get(i).getRequestId();
-                Log.e(TAG, "FEIL FOR FAEN " + triggeringGeofences.size());
+                Log.i(TAG, "TriggeringGeofences: " + sted + geofenceTransition);
             }
 
-            /*
-            if(sted.equals("NONNESETER"))
-            {
-                Log.e(TAG, "Endret det text?? " + sted);
-                setInformajson(sted);
-
-            } else if(sted.equals("FLORIDA"))
-            {
-                Log.e(TAG, "Endret det text?? " + sted);
-
-                kano.endreText("Hva faen?");
-
-            } else if(sted.equals("KRONSTAD"))
-            {
-                Log.e(TAG, "Endret det text?? " + sted);
-                kano.endreText("kroooonstad");
-
-            } */
 
 
             if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
                 mHandler.post(new DisplayToast(this, "Hei " + sted));
                 setInformajson(sted);
-                Log.e(TAG, "onHandleWork: enter" + sted + geofenceTransition);
+                Log.i(TAG, "onHandleWork: enter" + sted + geofenceTransition);
             } else {
                 mHandler.post(new DisplayToast(this, "Hade " + sted));
                 setInformajson("");
-                Log.e(TAG, "onHandleWork: exit" + sted + geofenceTransition);
+                Log.i(TAG, "onHandleWork: exit" + sted + geofenceTransition);
             }
 
 
@@ -100,8 +82,7 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
 
 
     // metode for å endre plaseringen i SharedPreferances
-    public void setInformajson(String text)
-    {
+    public void setInformajson(String text) {
         SharedPreferences sharedPreferences = getSharedPreferences("informasjon", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();

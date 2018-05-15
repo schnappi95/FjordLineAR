@@ -173,7 +173,7 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
             @Override
             public void run() {
                 Toast.makeText(HelloArActivity.this,
-                        "Removed Kuktrynevannet", Toast.LENGTH_SHORT).show();
+                        "RemovedKuktrynevannet ", Toast.LENGTH_SHORT).show();
 
             }
         });
