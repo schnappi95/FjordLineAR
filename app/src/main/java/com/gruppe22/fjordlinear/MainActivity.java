@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
 
         addGeofenceButton = findViewById(R.id.activateButton);
         removeGeofenceButton = findViewById(R.id.deactivateButton);
-        ImageButton cameraButton = findViewById(R.id.cameraButton);
 
         removeGeofenceButton.setEnabled(false);
 
@@ -86,6 +85,8 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
                 if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
                     addGeofences();
+                    Intent in = new Intent(getApplicationContext(), HelloArActivity.class);
+                    startActivity(in);
                     removeGeofenceButton.setEnabled(true);
                     addGeofenceButton.setEnabled(false);
                 }
@@ -104,35 +105,6 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
                 //skrur av removeButton
                 removeGeofenceButton.setEnabled(false);
                 addGeofenceButton.setEnabled(true);
-            }
-        });
-
-        cameraButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
-                        == PackageManager.PERMISSION_DENIED) {
-                    ActivityCompat.requestPermissions(
-                            MainActivity.this, new String[]{Manifest.permission.CAMERA},
-                            REQUEST_PERMISSIONS_REQUEST_CODE_CAMERA);
-                }
-
-                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_DENIED) {
-                    ActivityCompat.requestPermissions(
-                            MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            REQUEST_PERMISSIONS_REQUEST_CODE_WRITE);
-                }
-
-                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
-                        == PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                == PackageManager.PERMISSION_GRANTED) {
-
-                        Intent i = new Intent(getApplicationContext(), CameraActivity.class);
-                        startActivity(i);
-                }
             }
         });
 
