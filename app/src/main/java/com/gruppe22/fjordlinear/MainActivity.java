@@ -186,17 +186,17 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
     } */
 
     private void createGeoFence() {
-        for (Map.Entry<String, LatLng> entry : Values.HOLDEPLASSER.entrySet()) {
+        for (Map.Entry<String, LatLng> entry1 : Values.RADIUS1000.entrySet()) {
 
             mGeofenceList.add(new Geofence.Builder()
                     // Set the request ID of the geofence. This is a string to identify this geofence
-                    .setRequestId(entry.getKey())
+                    .setRequestId(entry1.getKey())
 
                     // Set the circular region of this geofence.
                     .setCircularRegion(
-                            entry.getValue().latitude,
-                            entry.getValue().longitude,
-                            Values.GEOFENCE_RADIUS_IN_METERS
+                            entry1.getValue().latitude,
+                            entry1.getValue().longitude,
+                            Values.GEOFENCE_RADIUS_IN_METERS_1000
                     )
 
                     .setExpirationDuration(Geofence.NEVER_EXPIRE)
@@ -208,6 +208,53 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
                     // Create the geofence.
                     .build());
         }
+
+        for (Map.Entry<String, LatLng> entry5 : Values.RADIUS750.entrySet()) {
+
+            mGeofenceList.add(new Geofence.Builder()
+                    // Set the request ID of the geofence. This is a string to identify this geofence
+                    .setRequestId(entry5.getKey())
+
+                    // Set the circular region of this geofence.
+                    .setCircularRegion(
+                            entry5.getValue().latitude,
+                            entry5.getValue().longitude,
+                            Values.GEOFENCE_RADIUS_IN_METERS_750
+                    )
+
+                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
+
+
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                            Geofence.GEOFENCE_TRANSITION_EXIT)
+
+                    // Create the geofence.
+                    .build());
+        }
+
+        for (Map.Entry<String, LatLng> entry20 : Values.RADIUS2000.entrySet()) {
+
+            mGeofenceList.add(new Geofence.Builder()
+                    // Set the request ID of the geofence. This is a string to identify this geofence
+                    .setRequestId(entry20.getKey())
+
+                    // Set the circular region of this geofence.
+                    .setCircularRegion(
+                            entry20.getValue().latitude,
+                            entry20.getValue().longitude,
+                            Values.GEOFENCE_RADIUS_IN_METERS_2000
+                    )
+
+                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
+
+
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                            Geofence.GEOFENCE_TRANSITION_EXIT)
+
+                    // Create the geofence.
+                    .build());
+        }
+
     }
 
 
@@ -284,24 +331,40 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
 
         switch (hentInformasjon()){
 
-            case "NONNESETER":
-                text = "Nonneseter kloster var et kloster i Bergen i middelalderen. " +
-                        "Det finnes fremdeles to rester av klosteret mellom Lille og Store Lungegårdsvann. " +
-                        "Tårnfoten og søndre korkapell ligger gjemt mellom flere nyere bygg langs Kaigaten.";
+            case "DJUPASTO750":
+                text = "Her bor schnappien, 1500m";
                 break;
 
-            case "FLORIDA":
-                text = "Florida er én av syv grunnkretser i strøket Nygård i Bergen sentrum. " +
-                        "Her ligger St. Paul gymnas, tidligere Florida sykehus, og bybanestoppet Florida.\n" +
-                        "Navnet Florida knyttes til eiendommen som huser Geofysisk Institutt ved Universitetet i Bergen. " +
-                        "Her finnes den offisielle værstasjonen (målepunkt) for Bergen.\n";
+            case "OLAVSKIRKEN1000":
+                text = "Detta kalles fødestedet til Norge, 2500m";
                 break;
 
-            case "KRONSTAD":
-                text = "Kronstad er et boligområde i Årstad bydel i Bergen like sør for byens sentrum, " +
-                        "som strekker seg fra Store Lungegårdsvann i nord og over Kronstadhøyden til Nymark ved Brann Stadion i sør, " +
-                        "og fra Haukeland universitetssykehus og Møllendal gravplass i øst til Danmarks plass (tidligere Kronstadtorget) " +
-                        "og Solheimsvannet i vest.";
+            case "FOYNO2000":
+                text = "Detta e bare kreft, 4000m";
+                break;
+
+            case "LEIRVIK2000":
+                text = "Leirvik, 4000m";
+                break;
+
+            case "VESTVIK2000":
+                text = "Vestvik fiskeoppdrett, 4000m";
+                break;
+
+            case "SOTRABRO1000":
+                text = "Sotrabroen, 2500m";
+                break;
+
+            case "SANDVIKVAAG1000":
+                text = "Sandvikvåg ferjekai, 2500m";
+                break;
+
+            case "FYRTAARN1000":
+                text = "Fyrtårn, 2500m";
+                break;
+
+            case "JEKTEVIK750":
+                text = "Jektevik ferjekai, 1500m";
                 break;
         }
 

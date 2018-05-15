@@ -16,12 +16,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <uses-library
+            android:name="com.john.arcorelocation"
+            android:required="false" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".HelloArActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:screenOrientation="locked"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
 
         <receiver
