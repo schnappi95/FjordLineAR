@@ -68,6 +68,7 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
             if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
                 mHandler.post(new DisplayToast(this, "Hei " + sted));
                 setInformajson(sted);
+
                 Log.i(TAG, "onHandleWork: enter" + sted + geofenceTransition);
             } else {
                 mHandler.post(new DisplayToast(this, "Hade " + sted));

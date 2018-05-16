@@ -17,6 +17,7 @@
 package com.gruppe22.fjordlinear;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -174,6 +175,8 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
             public void run() {
                 Toast.makeText(HelloArActivity.this,
                         "RemovedKuktrynevannet ", Toast.LENGTH_SHORT).show();
+                Intent in = new Intent(getApplicationContext(), InfoActivity.class);
+                startActivity(in);
 
             }
         });

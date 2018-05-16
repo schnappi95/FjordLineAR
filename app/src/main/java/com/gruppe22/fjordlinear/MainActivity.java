@@ -37,8 +37,6 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
     //final TextView textViewToChange = (TextView) findViewById(R.id.textView2);
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE_LOCATION = 99;
-    private static final int REQUEST_PERMISSIONS_REQUEST_CODE_CAMERA = 100;
-    private static final int REQUEST_PERMISSIONS_REQUEST_CODE_WRITE = 101;
 
     private ArrayList<Geofence> mGeofenceList;
 
