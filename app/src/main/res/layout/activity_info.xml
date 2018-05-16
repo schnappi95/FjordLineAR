@@ -6,4 +6,17 @@
     android:layout_height="match_parent"
     tools:context="com.gruppe22.fjordlinear.InfoActivity">
 
+    <fragment
+        android:id="@+id/fragment3"
+        android:name="com.gruppe22.fjordlinear.Informasjonstavle"
+        android:layout_width="323dp"
+        android:layout_height="210dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="42dp"
+        android:layout_marginStart="42dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
 </android.support.constraint.ConstraintLayout>
