@@ -17,7 +17,9 @@
 package com.gruppe22.fjordlinear;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -155,8 +157,9 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
             public void run() {
                 Toast.makeText(HelloArActivity.this,
                         "Touched Eiffel Tower", Toast.LENGTH_SHORT).show();
+                setInformajson("Eiffel Tower");
                 //lolololololol
-                locationScene.mLocationMarkers.remove(eiffelTower);
+                //locationScene.mLocationMarkers.remove(eiffelTower);
             }
         });
         eiffelTower.setTouchableSize(1000);
@@ -175,6 +178,7 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
             public void run() {
                 Toast.makeText(HelloArActivity.this,
                         "RemovedKuktrynevannet ", Toast.LENGTH_SHORT).show();
+                setInformajson("Kuktrynevannet");
                 Intent in = new Intent(getApplicationContext(), InfoActivity.class);
                 startActivity(in);
 
@@ -400,6 +404,15 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
                 });
         }
         mMessageSnackbar.show();
+    }
+
+    // metode for å endre plaseringen i SharedPreferances
+    public void setInformajson(String text) {
+        SharedPreferences sharedPreferences = getSharedPreferences("informasjon", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("plasering", text);
+        editor.apply();
     }
 
 }
