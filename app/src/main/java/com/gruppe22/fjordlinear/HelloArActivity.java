@@ -157,9 +157,11 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
             public void run() {
                 Toast.makeText(HelloArActivity.this,
                         "Touched Eiffel Tower", Toast.LENGTH_SHORT).show();
-                setInformajson("Eiffel Tower");
+                setInformasjon("Eiffel Tower");
                 //lolololololol
                 //locationScene.mLocationMarkers.remove(eiffelTower);
+                Intent in = new Intent(getApplicationContext(), InfoActivity.class);
+                startActivity(in);
             }
         });
         eiffelTower.setTouchableSize(1000);
@@ -178,7 +180,7 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
             public void run() {
                 Toast.makeText(HelloArActivity.this,
                         "RemovedKuktrynevannet ", Toast.LENGTH_SHORT).show();
-                setInformajson("Kuktrynevannet");
+                setInformasjon("Kuktrynevannet");
                 Intent in = new Intent(getApplicationContext(), InfoActivity.class);
                 startActivity(in);
 
@@ -407,7 +409,7 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
     }
 
     // metode for å endre plaseringen i SharedPreferances
-    public void setInformajson(String text) {
+    public void setInformasjon(String text) {
         SharedPreferences sharedPreferences = getSharedPreferences("informasjon", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();

@@ -98,8 +98,8 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
             public void onClick(View view) {
                 removeGeofence();
 
-                setInformajson("");
-                endreText();
+                //setInformajson("");
+                //endreText();
                 //skrur av removeButton
                 removeGeofenceButton.setEnabled(false);
                 addGeofenceButton.setEnabled(true);
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
         });
 
         // oppdaterer teksten i informajsonstavlen gjevnlig
-        Thread t = new Thread() {
+        /*Thread t = new Thread() {
             @Override
             public void run() {
                 try {
@@ -126,15 +126,15 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
             }
         };
 
-        t.start();
+        t.start();*/
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         removeGeofence();
-        setInformajson("");
-        endreText();
+        //setInformajson("");
+        //endreText();
 
     }
 
@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
 
 
     // endrer informajsonen i fragmentet til den nye plaseringen (håper jeg :))
-    public void endreText() {
+    /*public void endreText() {
 
         String text = "";
 
@@ -357,6 +357,6 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
 
         return sharedPreferences.getString("plasering", "");
 
-    }
+    }*/
 
 }

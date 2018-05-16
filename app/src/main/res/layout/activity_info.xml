@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context="com.gruppe22.fjordlinear.InfoActivity">
 
+    <ImageView
+        android:id="@+id/imageview1"
+        android:layout_width="323dp"
+        android:layout_height="210dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="44dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <fragment
         android:id="@+id/fragment3"
         android:name="com.gruppe22.fjordlinear.Informasjonstavle"
@@ -16,7 +28,6 @@
         android:layout_marginStart="42dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
