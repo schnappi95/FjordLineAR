@@ -447,6 +447,8 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
 
             case "kronstad":
 
+                locationScene.mLocationMarkers.clear();
+
                 final LocationMarker kuk = new LocationMarker(
                         5.346428,
                         60.369069,
@@ -468,6 +470,8 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
                 break;
 
             case "kiwi":
+
+                locationScene.mLocationMarkers.clear();
 
                 // Image marker at Eiffel Tower
                 final LocationMarker eiffelTower =  new LocationMarker(
