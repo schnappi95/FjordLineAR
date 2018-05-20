@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
     } */
 
     private void createGeoFence() {
-        for (Map.Entry<String, LatLng> entry1 : Values.RADIUS1000.entrySet()) {
+        /*for (Map.Entry<String, LatLng> entry1 : Values.RADIUS1000.entrySet()) {
 
             mGeofenceList.add(new Geofence.Builder()
                     // Set the request ID of the geofence. This is a string to identify this geofence
@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
 
                     // Create the geofence.
                     .build());
-        }
+        }*/
 
         for (Map.Entry<String, LatLng> entry20 : Values.RADIUS2000.entrySet()) {
 
