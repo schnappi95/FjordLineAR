@@ -146,8 +146,29 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
         // Set up our location scene
         locationScene = new LocationScene(this, this, mSession);
 
+        // oppdaterer teksten i informajsonstavlen gjevnlig
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(10000);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                oppdaterAr();
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                    Log.e(TAG, "InterruptedException i informasjonstavle thread");
+                }
+            }
+        };
+        t.start();
+
         // Image marker at Eiffel Tower
-      final LocationMarker eiffelTower =  new LocationMarker(
+     /* final LocationMarker eiffelTower =  new LocationMarker(
                 2.2945,
                 48.858222,
                 new ImageRenderer("dktur.jpg")
@@ -167,11 +188,11 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
         eiffelTower.setTouchableSize(1000);
         locationScene.mLocationMarkers.add(
                 eiffelTower
-        );
+        );*/
 
         // Annotation at Buckingham Palace
 
-        final LocationMarker kuk = new LocationMarker(
+         /*final LocationMarker kuk = new LocationMarker(
                         5.346428,
                         60.369069,
                         new AnnotationRenderer("Kuktrynevannet"));
@@ -187,7 +208,7 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
             }
         });
         kuk.setTouchableSize(500);
-        locationScene.mLocationMarkers.add(kuk);
+        locationScene.mLocationMarkers.add(kuk); */
 
 
         //locationScene.mLocationMarkers.add(
@@ -415,6 +436,81 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("plasering", text);
         editor.apply();
+    }
+
+    public void oppdaterAr() {
+
+        String text = "";
+
+
+        switch (hentGeofence()) {
+
+            case "kronstad":
+
+                final LocationMarker kuk = new LocationMarker(
+                        5.346428,
+                        60.369069,
+                        new AnnotationRenderer("Kuktrynevannet"));
+                kuk.setOnTouchListener(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(HelloArActivity.this,
+                                "RemovedKuktrynevannet ", Toast.LENGTH_SHORT).show();
+                        setInformasjon("Kuktrynevannet");
+                        Intent in = new Intent(getApplicationContext(), InfoActivity.class);
+                        startActivity(in);
+
+                    }
+                });
+                kuk.setTouchableSize(500);
+                locationScene.mLocationMarkers.add(kuk);
+
+                break;
+
+            case "kiwi":
+
+                // Image marker at Eiffel Tower
+                final LocationMarker eiffelTower =  new LocationMarker(
+                        2.2945,
+                        48.858222,
+                        new ImageRenderer("dktur.jpg")
+                );
+                eiffelTower.setOnTouchListener(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(HelloArActivity.this,
+                                "Touched Eiffel Tower", Toast.LENGTH_SHORT).show();
+                        setInformasjon("Eiffel Tower");
+                        //lolololololol
+                        //locationScene.mLocationMarkers.remove(eiffelTower);
+                        Intent in = new Intent(getApplicationContext(), InfoActivity.class);
+                        startActivity(in);
+                    }
+                });
+                eiffelTower.setTouchableSize(1000);
+                locationScene.mLocationMarkers.add(
+                        eiffelTower
+                );
+
+                break;
+
+            case "":
+
+                locationScene.mLocationMarkers.clear();
+                break;
+
+        }
+
+
+    }
+
+
+    public String hentGeofence()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("informasjon", Context.MODE_PRIVATE);
+
+        return sharedPreferences.getString("geofence", "");
+
     }
 
 }

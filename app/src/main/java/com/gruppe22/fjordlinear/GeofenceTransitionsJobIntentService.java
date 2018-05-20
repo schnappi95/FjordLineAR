@@ -87,7 +87,7 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
         SharedPreferences sharedPreferences = getSharedPreferences("informasjon", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("plasering", text);
+        editor.putString("geofence", text);
         editor.apply();
     }
 

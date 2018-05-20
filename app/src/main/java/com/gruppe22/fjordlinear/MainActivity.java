@@ -301,41 +301,15 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
 
         switch (hentInformasjon()){
 
-            case "DJUPASTO750":
-                text = "Her bor schnappien, 1500m";
+            case "kronstad":
+                text = "Du er nå på skole";
                 break;
 
-            case "OLAVSKIRKEN1000":
+            case "kiwi":
                 text = "Detta kalles fødestedet til Norge, 2500m";
                 break;
 
-            case "FOYNO2000":
-                text = "Detta e bare kreft, 4000m";
-                break;
 
-            case "LEIRVIK2000":
-                text = "Leirvik, 4000m";
-                break;
-
-            case "VESTVIK2000":
-                text = "Vestvik fiskeoppdrett, 4000m";
-                break;
-
-            case "SOTRABRO1000":
-                text = "Sotrabroen, 2500m";
-                break;
-
-            case "SANDVIKVAAG1000":
-                text = "Sandvikvåg ferjekai, 2500m";
-                break;
-
-            case "FYRTAARN1000":
-                text = "Fyrtårn, 2500m";
-                break;
-
-            case "JEKTEVIK750":
-                text = "Jektevik ferjekai, 1500m";
-                break;
         }
 
         tv1.setText(text);
