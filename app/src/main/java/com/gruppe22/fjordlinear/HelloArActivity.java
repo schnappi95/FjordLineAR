@@ -449,23 +449,23 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
 
                 locationScene.mLocationMarkers.clear();
 
-                final LocationMarker kuk = new LocationMarker(
+                final LocationMarker solheim = new LocationMarker(
                         5.346428,
                         60.369069,
-                        new AnnotationRenderer("Kuktrynevannet"));
-                kuk.setOnTouchListener(new Runnable() {
+                        new AnnotationRenderer("Solheim"));
+                solheim.setOnTouchListener(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(HelloArActivity.this,
-                                "RemovedKuktrynevannet ", Toast.LENGTH_SHORT).show();
-                        setInformasjon("Kuktrynevannet");
+                                "Solheim", Toast.LENGTH_SHORT).show();
+                        setInformasjon("Solheim");
                         Intent in = new Intent(getApplicationContext(), InfoActivity.class);
                         startActivity(in);
 
                     }
                 });
-                kuk.setTouchableSize(500);
-                locationScene.mLocationMarkers.add(kuk);
+                solheim.setTouchableSize(500);
+                locationScene.mLocationMarkers.add(solheim);
 
                 break;
 
