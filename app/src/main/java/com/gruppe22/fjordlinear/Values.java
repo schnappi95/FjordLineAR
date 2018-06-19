@@ -10,14 +10,6 @@ import java.util.HashMap;
 
 public class Values {
 
-    /*
-    // plaseringen til HIB
-    static final double lengdegrad = 60.369128;
-    static final double breddegrad = 5.350908;
-
-    // fence radius i meter
-    static final float radius = 500;
-    */
 
     private Values() {
     }
@@ -30,9 +22,11 @@ public class Values {
             GEOFENCE_EXPIRATION_IN_HOURS * 60 * 60 * 1000;
     */
 
-    static final float GEOFENCE_RADIUS_IN_METERS_2000 = 150; // i meter
-    //static final float GEOFENCE_RADIUS_IN_METERS_1000 = 2500; // i meter
-    //static final float GEOFENCE_RADIUS_IN_METERS_750 = 1500; // i meter
+    // Radiusene vi har brukt.
+    // Etter masse testing, anbefaler vi dere å bruke minst 5000 meter ute på sjøen
+    static final float GEOFENCE_RADIUS_IN_METERS_2000 = 2000;
+    //static final float GEOFENCE_RADIUS_IN_METERS_1000 = 1000;
+    //static final float GEOFENCE_RADIUS_IN_METERS_750 = 750;
 
     static final HashMap<String, LatLng> RADIUS2000 = new HashMap<>();
     //static final HashMap<String, LatLng> RADIUS1000 = new HashMap<>();
@@ -40,11 +34,14 @@ public class Values {
 
 
     static {
-        // Nonnester bybanestopp
-        RADIUS2000.put("kronstad", new LatLng(60.367993, 5.350484));
 
-        // Florida bybanestopp
-        RADIUS2000.put("kiwi", new LatLng(60.371376,5.347332));
+        // Definerer koordinatene til geofence
+
+        //RADIUS2000.put("kronstad", new LatLng(60.369128, 5.350908));
+
+        RADIUS2000.put("Fjord Line", new LatLng(60.392436, 5.309189));
+
+        //RADIUS2000.put("kiwi", new LatLng(60.371376,5.347332));
 
 
 

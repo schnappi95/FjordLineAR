@@ -20,6 +20,7 @@ public class InfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_info);
 
         // oppdaterer teksten i informajsonstavlen gjevnlig
+        // Unødvendig?
         Thread t = new Thread() {
             @Override
             public void run() {
@@ -41,7 +42,7 @@ public class InfoActivity extends AppCompatActivity {
         t.start();
     }
 
-    // endrer informajsonen i fragmentet til den nye plaseringen (håper jeg :))
+    // endrer informasjonen i fragmentet til den nye plasseringen
     public void endreText() {
 
         String text = "";
@@ -52,8 +53,23 @@ public class InfoActivity extends AppCompatActivity {
 
         switch (hentInformasjon()){
 
-            case "Solheim":
-                text = "Her bor Knut";
+            case "fisk":
+                text = "LAKSevåg";
+                iv1.setImageResource(R.drawable.guttatur);
+                break;
+
+            case "tur":
+                text = "Ulriken";
+                iv1.setImageResource(R.drawable.schnappi);
+                break;
+
+            case "bygg":
+                text = "Bergen tingrett";
+                iv1.setImageResource(R.drawable.guttatur);
+                break;
+
+            case "bad":
+                text = "Verftet";
                 iv1.setImageResource(R.drawable.guttatur);
                 break;
 
@@ -71,7 +87,7 @@ public class InfoActivity extends AppCompatActivity {
     {
         SharedPreferences sharedPreferences = getSharedPreferences("informasjon", Context.MODE_PRIVATE);
 
-        return sharedPreferences.getString("plasering", "");
+        return sharedPreferences.getString("plassering", "");
 
     }
 
