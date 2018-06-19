@@ -1,14 +1,10 @@
 package com.gruppe22.fjordlinear;
 
 import android.Manifest;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.media.AudioManager;
-import android.os.Build;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -17,9 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
@@ -32,9 +26,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity /*implements OnCompleteListener<Void>*/ {
-
-    //final TextView textViewToChange = (TextView) findViewById(R.id.textView2);
+public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE_LOCATION = 99;
 
@@ -98,43 +90,17 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
             public void onClick(View view) {
                 removeGeofence();
 
-                //setInformajson("");
-                //endreText();
-                //skrur av removeButton
                 removeGeofenceButton.setEnabled(false);
                 addGeofenceButton.setEnabled(true);
             }
         });
 
-        // oppdaterer teksten i informajsonstavlen gjevnlig
-        /*Thread t = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    while (!isInterrupted()) {
-                        Thread.sleep(1000);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                endreText();
-                            }
-                        });
-                    }
-                } catch (InterruptedException e) {
-                    Log.e(TAG, "InterruptedException i informasjonstavle thread");
-                }
-            }
-        };
-
-        t.start();*/
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         removeGeofence();
-        //setInformajson("");
-        //endreText();
 
     }
 
@@ -143,7 +109,7 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
     @Override
     protected void onStart() {
         super.onStart();
-        endreText();
+
     }
     */
 
@@ -152,55 +118,15 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
     @Override
     protected void onStop() {
         super.onStop();
-        endreText();
+
     } */
 
     private void createGeoFence() {
-        /*for (Map.Entry<String, LatLng> entry1 : Values.RADIUS1000.entrySet()) {
 
-            mGeofenceList.add(new Geofence.Builder()
-                    // Set the request ID of the geofence. This is a string to identify this geofence
-                    .setRequestId(entry1.getKey())
-
-                    // Set the circular region of this geofence.
-                    .setCircularRegion(
-                            entry1.getValue().latitude,
-                            entry1.getValue().longitude,
-                            Values.GEOFENCE_RADIUS_IN_METERS_1000
-                    )
-
-                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
-
-
-                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                            Geofence.GEOFENCE_TRANSITION_EXIT)
-
-                    // Create the geofence.
-                    .build());
-        }
-
-        for (Map.Entry<String, LatLng> entry5 : Values.RADIUS750.entrySet()) {
-
-            mGeofenceList.add(new Geofence.Builder()
-                    // Set the request ID of the geofence. This is a string to identify this geofence
-                    .setRequestId(entry5.getKey())
-
-                    // Set the circular region of this geofence.
-                    .setCircularRegion(
-                            entry5.getValue().latitude,
-                            entry5.getValue().longitude,
-                            Values.GEOFENCE_RADIUS_IN_METERS_750
-                    )
-
-                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
-
-
-                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                            Geofence.GEOFENCE_TRANSITION_EXIT)
-
-                    // Create the geofence.
-                    .build());
-        }*/
+        // Viser hvordan vi legger til geofencene laget i Values.java
+        // Skal man ha geofence med forskjellige størrelser, lager man en ny
+        // HashMap (RADIUS2000) og ny float (GEOFENCE_RADIUS_IN_METERS_XXXX) i values.java
+        // og kopierer HELE denne koden, helt fra FOR til BUILD, og endrer verdiene
 
         for (Map.Entry<String, LatLng> entry20 : Values.RADIUS2000.entrySet()) {
 
@@ -279,7 +205,7 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
                 .addOnSuccessListener(this, new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.i(TAG, "removeGeofence: successe");
+                        Log.i(TAG, "removeGeofence: success");
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
@@ -289,48 +215,5 @@ public class MainActivity extends AppCompatActivity /*implements OnCompleteListe
                     }
                 });
     }
-
-
-    // endrer informajsonen i fragmentet til den nye plaseringen (håper jeg :))
-    /*public void endreText() {
-
-        String text = "";
-
-        TextView tv1 = (TextView)findViewById(R.id.textView2);
-
-
-        switch (hentInformasjon()){
-
-            case "kronstad":
-                text = "Du er nå på skole";
-                break;
-
-            case "kiwi":
-                text = "Detta kalles fødestedet til Norge, 2500m";
-                break;
-
-
-        }
-
-        tv1.setText(text);
-    }
-    //hhh
-
-    public void setInformajson(String text)
-    {
-        SharedPreferences sharedPreferences = getSharedPreferences("informasjon", Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("plasering", text);
-        editor.apply();
-    }
-
-    public String hentInformasjon()
-    {
-        SharedPreferences sharedPreferences = getSharedPreferences("informasjon", Context.MODE_PRIVATE);
-
-        return sharedPreferences.getString("plasering", "");
-
-    }*/
 
 }

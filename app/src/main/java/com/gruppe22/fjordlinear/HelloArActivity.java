@@ -63,9 +63,7 @@ import uk.co.appoly.arcorelocation.utils.ARLocationPermissionHelper;
 import uk.co.appoly.arcorelocation.utils.Utils2D;
 
 /**
- * This is a simple example that shows how to create an augmented reality (AR) application using the
- * ARCore API. The application will display any detected planes and will allow the user to tap on a
- * plane to place a 3d model of the Android robot.
+ * Eksempelklasse fra Google ARCore som vi har bygget på
  */
 public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.Renderer {
     private static final String TAG = HelloArActivity.class.getSimpleName();
@@ -74,7 +72,6 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
     private GLSurfaceView mSurfaceView;
 
     private Session mSession;
-    private GestureDetector mGestureDetector;
     private Snackbar mMessageSnackbar;
     private DisplayRotationHelper mDisplayRotationHelper;
 
@@ -84,6 +81,7 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
     private final PointCloudRenderer mPointCloud = new PointCloudRenderer();
     private TapHelper tapHelper;
 
+    // De neste linjene blir ikke brukt, men vi våger ikke å fjerne dem.
     // Temporary matrix allocated here to reduce number of allocations for each frame.
     private final float[] mAnchorMatrix = new float[16];
 
@@ -138,7 +136,7 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
         // Create default config and check if supported.
         Config config = new Config(mSession);
         if (!mSession.isSupported(config)) {
-            showSnackbarMessage("This device does not support AR", true);
+            showSnackbarMessage("This device may not support AR, please try again", true);
         }
         mSession.configure(config);
 
@@ -146,7 +144,7 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
         // Set up our location scene
         locationScene = new LocationScene(this, this, mSession);
 
-        // oppdaterer teksten i informajsonstavlen gjevnlig
+        // dårlig løsning for å sjekke hvilke AR objekter som skal tegnes
         Thread t = new Thread() {
             @Override
             public void run() {
@@ -161,70 +159,11 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
                         });
                     }
                 } catch (InterruptedException e) {
-                    Log.e(TAG, "InterruptedException i informasjonstavle thread");
+                    Log.e(TAG, "InterruptedException in thread");
                 }
             }
         };
         t.start();
-
-        // Image marker at Eiffel Tower
-     /* final LocationMarker eiffelTower =  new LocationMarker(
-                2.2945,
-                48.858222,
-                new ImageRenderer("dktur.jpg")
-        );
-        eiffelTower.setOnTouchListener(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(HelloArActivity.this,
-                        "Touched Eiffel Tower", Toast.LENGTH_SHORT).show();
-                setInformasjon("Eiffel Tower");
-                //lolololololol
-                //locationScene.mLocationMarkers.remove(eiffelTower);
-                Intent in = new Intent(getApplicationContext(), InfoActivity.class);
-                startActivity(in);
-            }
-        });
-        eiffelTower.setTouchableSize(1000);
-        locationScene.mLocationMarkers.add(
-                eiffelTower
-        );*/
-
-        // Annotation at Buckingham Palace
-
-         /*final LocationMarker kuk = new LocationMarker(
-                        5.346428,
-                        60.369069,
-                        new AnnotationRenderer("Kuktrynevannet"));
-        kuk.setOnTouchListener(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(HelloArActivity.this,
-                        "RemovedKuktrynevannet ", Toast.LENGTH_SHORT).show();
-                setInformasjon("Kuktrynevannet");
-                Intent in = new Intent(getApplicationContext(), InfoActivity.class);
-                startActivity(in);
-
-            }
-        });
-        kuk.setTouchableSize(500);
-        locationScene.mLocationMarkers.add(kuk); */
-
-
-        //locationScene.mLocationMarkers.add(
-         //       new LocationMarker(
-          //              5.346428,
-           //             60.369069,
-            //            new AnnotationRenderer("Kuktrynevannet")));
-
-        // Example of using your own renderer.
-        // Uses a slightly modified version of hello_ar_java's ObjectRenderer
-        locationScene.mLocationMarkers.add(
-                new LocationMarker(
-                        -88.1423098,
-                        34.5498992,
-                        new ObjectRenderer("andy.obj", "andy.png")));
-
 
 
         // Correct heading with touching side of screen
@@ -344,6 +283,8 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
         } catch (IOException e) {
             Log.e(TAG, "Failed to read obj file");
         }*/
+
+        //skal være unødvendig for denne appen, men er igjen redd for å fjerne
         try {
             mPlaneRenderer.createOnGlThread(/*context=*/this, "trigrid.png");
         } catch (IOException e) {
@@ -429,43 +370,103 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
         mMessageSnackbar.show();
     }
 
-    // metode for å endre plaseringen i SharedPreferances
+    // metode for å endre plasseringen i SharedPreferances
     public void setInformasjon(String text) {
         SharedPreferences sharedPreferences = getSharedPreferences("informasjon", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("plasering", text);
+        editor.putString("plassering", text);
         editor.apply();
     }
 
     public void oppdaterAr() {
 
-        String text = "";
-
-
         switch (hentGeofence()) {
 
-            case "kronstad":
+            case "Fjord Line":
 
+                // Fjerner alle objektene før nye legges til for å unngå duplisering.
+                // Veldig dårlig løsning siden dette skjer hvert 10 sekund (se thread lengre oppe)
                 locationScene.mLocationMarkers.clear();
 
-                final LocationMarker solheim = new LocationMarker(
-                        5.346428,
-                        60.369069,
-                        new AnnotationRenderer("Solheim"));
-                solheim.setOnTouchListener(new Runnable() {
+                // Legger til objekter på spesifikke koordinater.
+                // I ARCoreLocation finnes det Image-, Annotation- og ObjectRenderer.
+                final LocationMarker fisk = new LocationMarker(
+                        5.291866,
+                        60.387996,
+                        new ImageRenderer("fisk300.png"));
+                fisk.setOnTouchListener(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(HelloArActivity.this,
-                                "Solheim", Toast.LENGTH_SHORT).show();
-                        setInformasjon("Solheim");
+                                "fisk", Toast.LENGTH_SHORT).show();
+                        setInformasjon("fisk");
                         Intent in = new Intent(getApplicationContext(), InfoActivity.class);
                         startActivity(in);
 
                     }
                 });
-                solheim.setTouchableSize(500);
-                locationScene.mLocationMarkers.add(solheim);
+                fisk.setTouchableSize(400);
+
+
+                final LocationMarker bygg = new LocationMarker(
+                        5.321541,
+                        60.393454,
+                        new ImageRenderer("bygg300.png"));
+                bygg.setOnTouchListener(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(HelloArActivity.this,
+                                "bygg", Toast.LENGTH_SHORT).show();
+                        setInformasjon("bygg");
+                        Intent in = new Intent(getApplicationContext(), InfoActivity.class);
+                        startActivity(in);
+
+                    }
+                });
+                bygg.setTouchableSize(400);
+
+
+                final LocationMarker bad = new LocationMarker(
+                        5.308359,
+                        60.395708,
+                        new ImageRenderer("bad300.png"));
+                bad.setOnTouchListener(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(HelloArActivity.this,
+                                "bad", Toast.LENGTH_SHORT).show();
+                        setInformasjon("bad");
+                        Intent in = new Intent(getApplicationContext(), InfoActivity.class);
+                        startActivity(in);
+
+                    }
+                });
+                bad.setTouchableSize(400);
+
+
+                final LocationMarker tur = new LocationMarker(
+                        5.387367,
+                        60.377745,
+                        new AnnotationRenderer("Ulriken"));
+                tur.setOnTouchListener(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(HelloArActivity.this,
+                                "tur", Toast.LENGTH_SHORT).show();
+                        setInformasjon("tur");
+                        Intent in = new Intent(getApplicationContext(), InfoActivity.class);
+                        startActivity(in);
+
+                    }
+                });
+                tur.setTouchableSize(500);
+
+                // Objektene blir ikke synlige før add() metoden blir kjørt.
+                locationScene.mLocationMarkers.add(fisk);
+                locationScene.mLocationMarkers.add(bygg);
+                locationScene.mLocationMarkers.add(bad);
+                locationScene.mLocationMarkers.add(tur);
 
                 break;
 
@@ -477,7 +478,7 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
                 final LocationMarker eiffelTower =  new LocationMarker(
                         2.2945,
                         48.858222,
-                        new ImageRenderer("dktur.jpg")
+                        new ImageRenderer("eiffel.png")
                 );
                 eiffelTower.setOnTouchListener(new Runnable() {
                     @Override
@@ -485,8 +486,6 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
                         Toast.makeText(HelloArActivity.this,
                                 "Touched Eiffel Tower", Toast.LENGTH_SHORT).show();
                         setInformasjon("Eiffel Tower");
-                        //lolololololol
-                        //locationScene.mLocationMarkers.remove(eiffelTower);
                         Intent in = new Intent(getApplicationContext(), InfoActivity.class);
                         startActivity(in);
                     }
@@ -504,11 +503,10 @@ public class HelloArActivity extends AppCompatActivity implements GLSurfaceView.
                 break;
 
         }
-
-
     }
 
 
+    // Henter IDen (navn) til Geofence
     public String hentGeofence()
     {
         SharedPreferences sharedPreferences = getSharedPreferences("informasjon", Context.MODE_PRIVATE);

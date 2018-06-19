@@ -5,6 +5,8 @@ import android.widget.Toast;
 
 /**
  * Created by Schnappi on 16.03.2018.
+ *
+ * Hjelpeklasse brukt i testing, kan sikkert fjernes
  */
 
 public class DisplayToast implements Runnable {

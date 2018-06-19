@@ -22,7 +22,7 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
 
     Handler mHandler;
 
-    String sted = "Hø?";
+    String sted = "empty";
 
     public GeofenceTransitionsJobIntentService(){
         mHandler = new Handler();
@@ -67,12 +67,12 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
 
             if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
                 mHandler.post(new DisplayToast(this, "Hei " + sted));
-                setInformajson(sted);
+                setInformasjon(sted);
 
                 Log.i(TAG, "onHandleWork: enter" + sted + geofenceTransition);
             } else {
                 mHandler.post(new DisplayToast(this, "Hade " + sted));
-                setInformajson("");
+                setInformasjon("");
                 Log.i(TAG, "onHandleWork: exit" + sted + geofenceTransition);
             }
 
@@ -82,8 +82,8 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
     }
 
 
-    // metode for å endre plaseringen i SharedPreferances
-    public void setInformajson(String text) {
+    // metode for å endre plasseringen i SharedPreferences
+    public void setInformasjon(String text) {
         SharedPreferences sharedPreferences = getSharedPreferences("informasjon", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
